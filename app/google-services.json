@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "921600718116",
+    "firebase_url": "https://tnua-hadasha-default-rtdb.firebaseio.com",
+    "project_id": "tnua-hadasha",
+    "storage_bucket": "tnua-hadasha.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:921600718116:android:6e4356a3acbf599d71afb1",
+        "android_client_info": {
+          "package_name": "com.example.tnua_hadasha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "921600718116-3r2eiaj7hg2ao0ffg1am693ved7a8gun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAURtzXpzSOfIyyPw0XhstD8u04AwHeZcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "921600718116-3r2eiaj7hg2ao0ffg1am693ved7a8gun.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
