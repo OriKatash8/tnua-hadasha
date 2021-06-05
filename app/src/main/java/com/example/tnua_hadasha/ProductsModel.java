@@ -9,12 +9,14 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class ProductsModel extends RecyclerView.Adapter {
     private String name;
-    private int amount;
+    private long amount;
+
+    private ProductsModel(){}
 
     public ProductsModel(FirestoreRecyclerOptions<ProductsModel> options) {
     }
 
-    public ProductsModel(String name, int amount) {
+    public ProductsModel(String name, long amount) {
         this.name = name;
         this.amount = amount;
 
@@ -28,7 +30,7 @@ public class ProductsModel extends RecyclerView.Adapter {
         this.name = name;
     }
 
-    public int getAmount() {
+    public long getAmount() {
         return amount;
     }
 

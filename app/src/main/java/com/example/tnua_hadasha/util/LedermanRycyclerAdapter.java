@@ -29,7 +29,7 @@ public class LedermanRycyclerAdapter extends FirestoreRecyclerAdapter<ProductsMo
     @Override
     protected void onBindViewHolder(@NonNull ProductsViewHolder holder, int position, @NonNull ProductsModel model) {
         holder.list_name.setText(model.getName());
-        holder.list_amount.setText(model.getAmount());
+        holder.list_amount.setText(model.getAmount()+"");
 
     }
 
