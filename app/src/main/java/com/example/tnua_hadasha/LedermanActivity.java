@@ -2,6 +2,7 @@ package com.example.tnua_hadasha;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,21 +62,22 @@ public class LedermanActivity extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull ProductsViewHolder holder, int position, @NonNull ProductsModel model) {
 
-            holder.list_name.setText(model.getName());
-            holder.list_amount.setText(model.getAmount()+ "");
+                holder.list_name.setText(model.getName());
+                holder.list_amount.setText(model.getAmount() + "");
 
             //set amount option - risk!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            holder.btnPlus.setOnClickListener(new View.OnClickListener() {
+             holder.btnPlus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    
+
+
                 }
             });
                 holder.btnMinus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Objects.requireNonNull(model).setAmount((int) (model.getAmount()-1));
+                   //     Objects.requireNonNull(model).setAmount((int) (model.getAmount()-1));
                     }
                 });
 

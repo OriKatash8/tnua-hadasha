@@ -46,7 +46,7 @@ btnSignIn.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         moveToMenuActivity(mFirebaseUser);
-        //firebaseDatabase.getReference().child(FirebaseUserT.getUid()).addValueEventListener(new )
+
     }
 });
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {

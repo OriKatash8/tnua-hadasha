@@ -10,10 +10,6 @@ public class UserDetail {
     private  String password;
     private Spinner Tafkid;
 
-    public  UserDetail(String fName, String lName, String password, String email, String job)
-    {
-
-    }
 
     public UserDetail(String firstName, String lastName, String email, String password, Spinner tafkid) {
         this.firstName = firstName;
