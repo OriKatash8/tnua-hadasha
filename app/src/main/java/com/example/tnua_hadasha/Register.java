@@ -1,12 +1,9 @@
 package com.example.tnua_hadasha;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,21 +15,23 @@ import android.widget.Toast;
 
 import com.example.tnua_hadasha.user.UserDetail;
 import com.example.tnua_hadasha.util.CustomToast;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Register extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    EditText firstName,lastName,password,email;
+    EditText firstName, lastName, password, email;
     Spinner tafkid;
     TextView tvTafkid;
     Button MRegbtn;
+    FirebaseFirestore firebaseFirestore;
     FirebaseAuth mFirebaseAuth;
     FirebaseDatabase firebaseDatabase;
 
@@ -47,62 +46,54 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         password = findViewById(R.id.password);
         email = findViewById(R.id.email);
         MRegbtn = findViewById(R.id.RegBtn);
-        tvTafkid =findViewById(R.id.textViewTafkid);
+        tvTafkid = findViewById(R.id.textViewTafkid);
         tafkid = findViewById(R.id.Tafkid);
 
-
-
-
+        firebaseFirestore = FirebaseFirestore.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase=FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
         MRegbtn.setOnClickListener(view -> {
             final String fName = firstName.getText().toString();
             final String lName = lastName.getText().toString();
             final String Email = email.getText().toString();
-            final String Password =password.getText().toString();
-       //     Spinner tafkid = (Spinner)findViewById(R.id.Tafkid);
-          // final String TafkidText = tafkid.getSelectedItem().toString();
+            final String Password = password.getText().toString();
+            //     Spinner tafkid = (Spinner)findViewById(R.id.Tafkid);
+            // final String TafkidText = tafkid.getSelectedItem().toString();
             final String TafkidText = tafkid.getSelectedItem().toString();
 
-            if(Email.isEmpty())
-            {
+            if (Email.isEmpty()) {
                 email.setError("נא להזין כתובת מייל");
                 email.requestFocus();
-            }
-            else if (fName.isEmpty())
-            {
+            } else if (fName.isEmpty()) {
                 firstName.setError("נא להזין שם פרטי");
                 firstName.requestFocus();
-            }
-            else if (lName.isEmpty())
-            {
+            } else if (lName.isEmpty()) {
                 lastName.setError("נא להזין שם משפחה");
                 lastName.requestFocus();
-            }
-            else if (Password.isEmpty())
-            {
+            } else if (Password.isEmpty()) {
                 password.setError("נא להזין סיסמה");
                 password.requestFocus();
-            }
-            else if (TafkidText.equals("לא בחר"))
-            {
+            } else if (TafkidText.equals("לא בחר")) {
                 tvTafkid.setError("נא לבחור את התפקיד בתנועה");
                 tvTafkid.requestFocus();
-            }
-            else if (!(Email.isEmpty()&&Password.isEmpty())){
-                mFirebaseAuth.createUserWithEmailAndPassword(Email,Password)
+            } else if (!(Email.isEmpty() && Password.isEmpty())) {
+                mFirebaseAuth.createUserWithEmailAndPassword(Email, Password)
                         .addOnCompleteListener(Register.this, task -> {
-                            if (!task.isSuccessful())
-                            {
-                                CustomToast.createToast(Register.this,"הרשמה נכשלה, נסה שוב!"+ task.getException().getMessage(),true);
-                            }
-                            else {
-                                UserDetail userDetail = new UserDetail(fName,lName,Password,Email,TafkidText);
+                            if (!task.isSuccessful()) {
+                                CustomToast.createToast(Register.this, "הרשמה נכשלה, נסה שוב!" + task.getException().getMessage(), true);
+                            } else {
+
+                                UserDetail userDetail = new UserDetail(fName, lName, Password, Email, tafkid);
                                 String uid = task.getResult().getUser().getUid();
-                                firebaseDatabase.getReference(uid).setValue(userDetail)
+
+                                final DocumentReference user= firebaseFirestore.collection("Users").document(uid);
+
+                                Map<String,String> fsU = new HashMap<>();
+                                fsU.put("tafkid",TafkidText);
+                                user.set(fsU)
                                         .addOnSuccessListener(aVoid -> {
-                                            Intent intent=new Intent(this,Login.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            Intent intent = new Intent(this, Login.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
 
 
@@ -111,16 +102,14 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
 
                         });
 
-            } else
-            {
-                CustomToast.createToast(Register.this,"שגיאה !",true);
+            }
+            else {
+                CustomToast.createToast(Register.this, "שגיאה !", true);
             }
         });
 
 
-
-
-        Spinner tafkid =(Spinner) findViewById(R.id.Tafkid);
+        Spinner tafkid = (Spinner) findViewById(R.id.Tafkid);
 
         tafkid.setOnItemSelectedListener(this);
 
@@ -145,20 +134,18 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
         tafkidim.add("משץ ג");
 
 
-
-
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tafkidim);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         tafkid.setAdapter(dataAdapter);
 
 
-        }
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String item = parent.getItemAtPosition(position).toString();
-        Toast.makeText(parent.getContext(),"Selected: " + item, Toast.LENGTH_LONG).show();
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
     @Override

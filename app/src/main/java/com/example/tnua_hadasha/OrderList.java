@@ -3,6 +3,7 @@ package com.example.tnua_hadasha;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,36 @@ public class OrderList extends AppCompatActivity {
         registerForContextMenu(listOrders);
         listItem.add(new Order(""));
         updateListView();
+        listOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
+        listOrders.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(OrderList.this);
+                alert.setTitle("מחר מהרשימה");
+                alert.setMessage("בטוח שאתה רוצה למחוק?");
+                alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        listItem.remove(position);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+                alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alert.show();
+                return true;
+            }
+        });
+    }
+    {
+
+    }
 
 
 
@@ -46,7 +77,7 @@ public class OrderList extends AppCompatActivity {
 
 
 
-    }
+
     public void updateListView() {
         Bundle bundle = getIntent().getExtras();
         Intent intent = getIntent();

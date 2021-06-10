@@ -6,7 +6,9 @@ import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,11 @@ import android.widget.TextView;
 import com.example.tnua_hadasha.util.LedermanRycyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -25,7 +31,7 @@ public class LedermanActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference productRef = db.collection("Products");
 
-
+private static final String TAG = "DocSnippets";
     private FirebaseFirestore firebaseFirestore;
     private RecyclerView mFirestireList;
     private FirestoreRecyclerAdapter adapter;
@@ -40,7 +46,7 @@ public class LedermanActivity extends AppCompatActivity {
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         mFirestireList=findViewById(R.id.firestore_list);
-
+        DocumentReference UpdatingRef = firebaseFirestore.collection("Products").document("amount");
 
         //Query
         Query query = firebaseFirestore.collection("Products");
@@ -50,6 +56,28 @@ public class LedermanActivity extends AppCompatActivity {
 
         FirestoreRecyclerOptions<ProductsModel>options = new FirestoreRecyclerOptions.Builder<ProductsModel>()
                 .setQuery(query, ProductsModel.class).build();
+
+
+        btnPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdatingRef.update("amount", FieldValue.increment(1))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG,"עדכון בוצע בהצלחה");
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG,"שגיאה",e);
+                            }
+                        });
+
+
+            }
+        });
 
          adapter = new FirestoreRecyclerAdapter<ProductsModel, ProductsViewHolder>(options) {
             @NonNull
@@ -67,22 +95,17 @@ public class LedermanActivity extends AppCompatActivity {
 
             //set amount option - risk!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-             holder.btnPlus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-
-                }
-            });
-                holder.btnMinus.setOnClickListener(new View.OnClickListener() {
+               /* holder.btnMinus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                    //     Objects.requireNonNull(model).setAmount((int) (model.getAmount()-1));
                     }
-                });
+                });*/
 
 
             }
+
         };
         //View Holder
         mFirestireList.setHasFixedSize(true);
@@ -106,6 +129,7 @@ public class LedermanActivity extends AppCompatActivity {
            btnMinus= findViewById(R.id.btnMinus);
             btnPlus=findViewById(R.id.btnPlus);
         }
+
 
     }
     @Override
