@@ -9,8 +9,8 @@ public class BroadcastBattery extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        int battery = intent.getIntExtra("level",0);
-        Toast.makeText(context,String.valueOf(battery),Toast.LENGTH_SHORT).show();
+        int battery = intent.getIntExtra("level",98);
+        Toast.makeText(context,"סוללה נמוכה"+String.valueOf(battery),Toast.LENGTH_SHORT).show();
 
     }
 }

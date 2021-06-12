@@ -26,6 +26,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SnapshotMetadata;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Login extends AppCompatActivity {
     EditText emailLog, password;
     Button btnSignIn;
@@ -50,22 +53,24 @@ public class Login extends AppCompatActivity {
         btnSignIn = findViewById(R.id.LoginBtn);
         tvSignIn = findViewById(R.id.LoginText);
 
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToMenuActivity(firebaseFirestore);
+                moveToMenuActivity(mFirebaseUser);
 
             }
         });
-      /*  mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+       /* mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = firebaseAuth.getCurrentUser();
                 if (mFirebaseUser != null) {
-                    String userR =
+                    moveToMenuActivity(mFirebaseUser);
                 } else {
                     CustomToast.createToast(Login.this, "בבקשה התחבר למשתמש", false);
 
@@ -77,10 +82,80 @@ public class Login extends AppCompatActivity {
 
     ;
 
-    public void moveToMenuActivity(FirebaseFirestore firebaseFirestore) {
+    public void moveToMenuActivity(FirebaseUser mFirebaseUser) {
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+        ValueEventListener   = firebaseDatabase.getReference().child(String.valueOf(mFirebaseUser)).addValueEventListener(new ValueEventListener() {
             @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+              //  FirebaseUser mFirebaseUser = firebaseAuth.getCurrentUser();
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (firebaseUser != null) {
+                    String uid = firebaseUser.getUid();
+                    DocumentReference documentReference = firebaseFirestore.collection("Users").document(uid);
+                    documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful())
+                            {
+                                DocumentSnapshot documentSnapshot = task.getResult();
+                                String t = (String) documentSnapshot.get("tafkid");
+                                switch (t) {
+                                    case "מדריך ט":
+                                    case "מדריך ח":
+                                    case "מדריך ז":
+                                    case "מדריך ו":
+                                    case "מדריך ה":
+                                    case "מדריך ד בנים":
+                                    case "מדריך ד בנות":
+                                    case "מדריך ג":
+                                        Intent i = new Intent(Login.this, HomeActivity.class);
+                                        CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        //  i.putExtra("מה קורה", name);
+                                        startActivity(i);
+                                        break;
+                                    case "משץ ט":
+                                    case "משץ ח":
+                                    case "משץ ז":
+                                    case "משץ ו":
+                                    case "משץ ה":
+                                    case "משץ ד בנים":
+                                    case "משץ ד בנות":
+                                    case "משץ ג":
+                                        Intent j = new Intent(Login.this, home_mashatzim.class);
+                                        CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
+                                        j.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        //  j.putExtra("מה קורה", name);
+                                        startActivity(j);
+                                        break;
+                                    case "צוות לדרמן":
+                                        Intent k = new Intent(Login.this, activity_home_lederman.class);//getApplicationContext()
+
+                                        CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
+                                        k.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        // k.putExtra("מה קורה", name);
+                                        startActivity(k);
+                                        break;
+                                }
+
+                            }
+
+                            }
+
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+    });
+}
+}
+
+
+     /*       @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = firebaseAuth.getCurrentUser();
                 if (mFirebaseUser != null) {
@@ -89,10 +164,8 @@ public class Login extends AppCompatActivity {
                     documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isComplete()) {
-                                Log.i("User", String.valueOf(FirebaseAuth.getInstance().getCurrentUser()));
-                                DocumentSnapshot documentSnapshot =task.getResult();
-
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot documentSnapshot = task.getResult();
                                 String t = (String) documentSnapshot.getString("tafkid");
 
                                 if (t.equals("מדריך ו")) {
@@ -101,7 +174,7 @@ public class Login extends AppCompatActivity {
                                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     //  i.putExtra("מה קורה", name);
                                     startActivity(i);
-                                } else if (t.equals("משץט")) {
+                                } else if (t.equals("משץ ט")) {
                                     Intent j = new Intent(Login.this, home_mashatzim.class);
                                     CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
                                     j.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -114,7 +187,7 @@ public class Login extends AppCompatActivity {
                                     // k.putExtra("מה קורה", name);
                                     startActivity(k);
                                 }
-                            } else {
+                            else {
                                 Log.d(TAG, "לא הצלחת להתחבר", task.getException());
                             }
 
@@ -126,9 +199,11 @@ public class Login extends AppCompatActivity {
 
                 }
             }
-            };
+        };
     }
 }
+
+
 
 
 

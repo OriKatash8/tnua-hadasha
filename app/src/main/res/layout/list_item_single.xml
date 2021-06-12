@@ -26,7 +26,7 @@
         app:layout_constraintVertical_bias="0.757" />
 
     <Button
-        android:id="@+id/btnPlus"
+        android:id="@+id/btnPlusR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="+"
@@ -42,7 +42,7 @@
         app:layout_constraintVertical_bias="0.38" />
 
     <Button
-        android:id="@+id/btnMinus"
+        android:id="@+id/btnMinusR"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-"
@@ -52,6 +52,6 @@
         app:backgroundTint="#FF0000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnPlus"
+        app:layout_constraintStart_toEndOf="@+id/btnPlusR"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

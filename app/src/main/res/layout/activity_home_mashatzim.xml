@@ -4,4 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home_mashatzim"/>
+    tools:context=".home_mashatzim">
+
+    <TextView
+        android:id="@+id/mashazim_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ברןך הבא לדף - משצים!!"
+        android:textColor="#4CAF50"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.202" />
+
+    <TextView
+        android:id="@+id/infoMashazim"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="בחר באחת מן האפשריות של התפריט כדי להמשיך"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mashazim_title"
+        app:layout_constraintVertical_bias="0.082" />
+</androidx.constraintlayout.widget.ConstraintLayout>

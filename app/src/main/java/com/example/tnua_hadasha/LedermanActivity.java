@@ -2,30 +2,23 @@ package com.example.tnua_hadasha;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import com.example.tnua_hadasha.util.LedermanRycyclerAdapter;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
-import java.util.Objects;
 
 public class LedermanActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -36,17 +29,18 @@ private static final String TAG = "DocSnippets";
     private RecyclerView mFirestireList;
     private FirestoreRecyclerAdapter adapter;
 
+
  //   private ProductsModel adapter;
-   private Button btnPlus, btnMinus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lederman);
 
+
         firebaseFirestore = FirebaseFirestore.getInstance();
         mFirestireList=findViewById(R.id.firestore_list);
-        DocumentReference UpdatingRef = firebaseFirestore.collection("Products").document("amount");
+
 
         //Query
         Query query = firebaseFirestore.collection("Products");
@@ -58,26 +52,8 @@ private static final String TAG = "DocSnippets";
                 .setQuery(query, ProductsModel.class).build();
 
 
-        btnPlus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UpdatingRef.update("amount", FieldValue.increment(1))
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG,"עדכון בוצע בהצלחה");
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG,"שגיאה",e);
-                            }
-                        });
 
 
-            }
-        });
 
          adapter = new FirestoreRecyclerAdapter<ProductsModel, ProductsViewHolder>(options) {
             @NonNull
@@ -87,11 +63,34 @@ private static final String TAG = "DocSnippets";
                 return new ProductsViewHolder(view);
             }
 
+
+
             @Override
             protected void onBindViewHolder(@NonNull ProductsViewHolder holder, int position, @NonNull ProductsModel model) {
 
                 holder.list_name.setText(model.getName());
                 holder.list_amount.setText(model.getAmount() + "");
+
+
+                holder.btnPlus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String pid  = productRef.getId();
+                        DocumentReference documentReference = firebaseFirestore.collection("Products").document(pid);
+                        documentReference.update("amount", FieldValue.increment(1));
+                        holder.list_amount.setText(Integer.parseInt(holder.list_amount.getText().toString())+1+"");
+
+                    }
+                });
+                holder.btnMinus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String pid= productRef.getId();
+                        DocumentReference documentReference = firebaseFirestore.collection("Products").document(pid);
+                        documentReference.update("amount",FieldValue.increment(-1));
+                        holder.list_amount.setText(Integer.parseInt(holder.list_amount.getText().toString())-1+"");
+                    }
+                });
 
             //set amount option - risk!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -107,10 +106,14 @@ private static final String TAG = "DocSnippets";
             }
 
         };
+
+
         //View Holder
         mFirestireList.setHasFixedSize(true);
         mFirestireList.setLayoutManager(new LinearLayoutManager(this));
         mFirestireList.setAdapter(adapter);
+
+
             }
 
     private class ProductsViewHolder  extends RecyclerView.ViewHolder{
@@ -126,8 +129,9 @@ private static final String TAG = "DocSnippets";
 
             list_name = itemView.findViewById(R.id.list_name);
             list_amount = itemView.findViewById(R.id.list_amount);
-           btnMinus= findViewById(R.id.btnMinus);
-            btnPlus=findViewById(R.id.btnPlus);
+           btnMinus= itemView.findViewById(R.id.btnMinusR);
+            btnPlus=itemView.findViewById(R.id.btnPlusR);
+
         }
 
 
@@ -143,6 +147,20 @@ private static final String TAG = "DocSnippets";
         super.onStop();
         adapter.stopListening();
     }
+
+
+
+
+//
+//        Map<String, Object> map = new HashMap<>();
+//        documentReference.update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void aVoid) {
+//                map.put("amount", +1);
+//            }
+     //   });
+
+
 }
 
 

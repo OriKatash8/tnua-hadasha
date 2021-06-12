@@ -5,15 +5,10 @@
     <item
         android:id="@+id/action_peula"
         android:orderInCategory="100"
-        android:title=" פעולה"
+        android:title="הכנת פעולה"
 
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/action_rooms"
-        android:orderInCategory="200"
-        android:title="חדרים"
 
-        app:showAsAction="always" />
 
 </menu>

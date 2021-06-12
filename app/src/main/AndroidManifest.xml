@@ -11,8 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TnuaHadasha">
-        <activity android:name=".OrderList"/>
-        <activity android:name=".Order_Activity" />
+        <activity android:name=".OrderList" >
+
+        </activity>
+        <activity android:name=".Order_Activity" >
+
+        </activity>
         <activity android:name=".home_mashatzim" />
         <activity android:name=".activity_home_lederman" />
         <activity android:name=".LedermanActivity">
@@ -20,7 +24,7 @@
         </activity>
         <receiver android:name=".BroadcastBattery">
             <intent-filter>
-                <action android:name="android.intent.action.BATTERY_CHANGED"/>
+                <action android:name="android.intent.action.BATTERY_LOW"/>
             </intent-filter>
 
 
