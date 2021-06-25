@@ -59,7 +59,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
             final String Password = password.getText().toString();
             //     Spinner tafkid = (Spinner)findViewById(R.id.Tafkid);
             // final String TafkidText = tafkid.getSelectedItem().toString();
-            final String TafkidText = tafkid.getSelectedItem().toString();
+            final String TafkidText = tafkid.getSelectedItem().toString(); //מעביר את הspinner לטקסט כדי שיוכל להוסיף לפיירסטור
 
             if (Email.isEmpty()) {
                 email.setError("נא להזין כתובת מייל");
@@ -86,18 +86,21 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
                                 UserDetail userDetail = new UserDetail(fName, lName, Password, Email, tafkid);
                                 String uid = task.getResult().getUser().getUid();
 
-                                final DocumentReference user= firebaseFirestore.collection("Users").document(uid);
+                                final DocumentReference user= firebaseFirestore.collection("Users").document(uid); //יוצר user חדש בfirestore
 
                                 Map<String,String> fsU = new HashMap<>();
-                                fsU.put("tafkid",TafkidText);
+                                fsU.put("tafkid",TafkidText);//מוסיף למשתמש את התפקיד
+                                fsU.put("fname", fName);//
+                                fsU.put("lname", lName);// מוסיף את השם של המשתמש לפיירסטור
                                 user.set(fsU)
                                         .addOnSuccessListener(aVoid -> {
-                                            Intent intent = new Intent(this, Login.class);
+                                            Intent intent = new Intent(this, Login.class); //מעביר לאקטיביטי "login"
                                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
 
 
                                         });
+
                             }
 
                         });
@@ -113,7 +116,7 @@ public class Register extends AppCompatActivity implements AdapterView.OnItemSel
 
         tafkid.setOnItemSelectedListener(this);
 
-        List<String> tafkidim = new ArrayList<String>();
+        List<String> tafkidim = new ArrayList<String>(); //רשימת תפקידים שיוצג בספינר
         tafkidim.add("לא בחר");
         tafkidim.add("מדריך ט");
         tafkidim.add("מדריך ח");

@@ -21,16 +21,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 public class LedermanActivity extends AppCompatActivity {
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference productRef = db.collection("Products");
 
-private static final String TAG = "DocSnippets";
+    private static final String TAG = "DocSnippets";
     private FirebaseFirestore firebaseFirestore;
     private RecyclerView mFirestireList;
     private FirestoreRecyclerAdapter adapter;
 
 
- //   private ProductsModel adapter;
+    //   private ProductsModel adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,7 @@ private static final String TAG = "DocSnippets";
 
 
 
-         adapter = new FirestoreRecyclerAdapter<ProductsModel, ProductsViewHolder>(options) {
+        adapter = new FirestoreRecyclerAdapter<ProductsModel, ProductsViewHolder>(options) {
             @NonNull
             @Override
             public ProductsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -92,7 +93,7 @@ private static final String TAG = "DocSnippets";
                     }
                 });
 
-            //set amount option - risk!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //set amount option - risk!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
                /* holder.btnMinus.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +115,7 @@ private static final String TAG = "DocSnippets";
         mFirestireList.setAdapter(adapter);
 
 
-            }
+    }
 
     private class ProductsViewHolder  extends RecyclerView.ViewHolder{
 
@@ -129,7 +130,7 @@ private static final String TAG = "DocSnippets";
 
             list_name = itemView.findViewById(R.id.list_name);
             list_amount = itemView.findViewById(R.id.list_amount);
-           btnMinus= itemView.findViewById(R.id.btnMinusR);
+            btnMinus= itemView.findViewById(R.id.btnMinusR);
             btnPlus=itemView.findViewById(R.id.btnPlusR);
 
         }
@@ -158,7 +159,7 @@ private static final String TAG = "DocSnippets";
 //            public void onSuccess(Void aVoid) {
 //                map.put("amount", +1);
 //            }
-     //   });
+    //   });
 
 
 }

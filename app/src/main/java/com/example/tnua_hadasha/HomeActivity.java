@@ -33,7 +33,7 @@ TextView madInfo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_lederman);
+        setContentView(R.layout.activity_home);
         madTitle =findViewById(R.id.titleMad);
         madInfo = findViewById(R.id.infoMad);
     }

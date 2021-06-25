@@ -32,7 +32,6 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
     EditText emailLog, password;
     Button btnSignIn;
-    private static final String TAG = "DocSnippets";
     TextView tvSignIn;
     FirebaseUser mFirebaseUser;
     FirebaseFirestore firebaseFirestore;
@@ -61,7 +60,7 @@ public class Login extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveToMenuActivity(mFirebaseUser);
+                moveToMenuActivity(mFirebaseUser);//קורא לפעולה כשלוחצים על הכפתור
 
             }
         });
@@ -87,19 +86,19 @@ public class Login extends AppCompatActivity {
         ValueEventListener   = firebaseDatabase.getReference().child(String.valueOf(mFirebaseUser)).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-              //  FirebaseUser mFirebaseUser = firebaseAuth.getCurrentUser();
+                //  FirebaseUser mFirebaseUser = firebaseAuth.getCurrentUser();
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (firebaseUser != null) {
-                    String uid = firebaseUser.getUid();
-                    DocumentReference documentReference = firebaseFirestore.collection("Users").document(uid);
+                    String uid = firebaseUser.getUid(); //מקבל את הid מהauth
+                    DocumentReference documentReference = firebaseFirestore.collection("Users").document(uid);  //עובד דרך הid
                     documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful())
                             {
                                 DocumentSnapshot documentSnapshot = task.getResult();
-                                String t = (String) documentSnapshot.get("tafkid");
-                                switch (t) {
+                                String t = (String) documentSnapshot.get("tafkid"); //מגדיר T שווה ל"field" שך התפקיד
+                                switch (t) { //בודק לפי הt לאיזה תפקיד המשתמש שייך
                                     case "מדריך ט":
                                     case "מדריך ח":
                                     case "מדריך ז":
@@ -108,11 +107,10 @@ public class Login extends AppCompatActivity {
                                     case "מדריך ד בנים":
                                     case "מדריך ד בנות":
                                     case "מדריך ג":
-                                        Intent i = new Intent(Login.this, HomeActivity.class);
+                                        Intent i = new Intent(Login.this, HomeActivity.class); //יוצר אינטנט שמעביר את המשתמש מהתפקיד אל האקטיביטי שהוא צריך להגיע אליה
                                         CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
                                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        //  i.putExtra("מה קורה", name);
-                                        startActivity(i);
+                                        startActivity(i);//מפעיל את האקטיביטי
                                         break;
                                     case "משץ ט":
                                     case "משץ ח":
@@ -125,22 +123,19 @@ public class Login extends AppCompatActivity {
                                         Intent j = new Intent(Login.this, home_mashatzim.class);
                                         CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
                                         j.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        //  j.putExtra("מה קורה", name);
                                         startActivity(j);
                                         break;
                                     case "צוות לדרמן":
                                         Intent k = new Intent(Login.this, activity_home_lederman.class);//getApplicationContext()
-
                                         CustomToast.createToast(getApplicationContext(), "התחברת בהצלחה!", false);
                                         k.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        // k.putExtra("מה קורה", name);
                                         startActivity(k);
                                         break;
                                 }
 
                             }
 
-                            }
+                        }
 
                     });
                 }
@@ -150,8 +145,8 @@ public class Login extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-    });
-}
+        });
+    }
 }
 
 
